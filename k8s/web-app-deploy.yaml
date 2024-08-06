@@ -13,5 +13,7 @@ spec:
         app: web-app
     spec:
       containers:
-      - name: server
-        image: lakshaybabbar/server
+        - name: server
+          image: lakshaybabbar/server
+          ports:
+            - containerPort: 8000
