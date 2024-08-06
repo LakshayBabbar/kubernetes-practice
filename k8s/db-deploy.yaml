@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-app-db
+  template:
+    metadata:
+      labels:
+        app: web-app-db
+    spec:
+      containers:
+      - name: db
+        image: mongo-express
