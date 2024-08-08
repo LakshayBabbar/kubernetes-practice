@@ -10,12 +10,16 @@ COPY . .
 
 RUN npm run build
 
-FROM ubuntu:latest
+FROM nginx:1.17.10-alpine
 
-RUN apt-get update && apt-get install -y apache2 && apt-get clean && apt-get autoremove
+COPY --from=build /app/dist/ /usr/share/nginx/html/
 
-COPY --from=build /app/dist/ /var/www/html/
+RUN rm -rf /etc/nginx/conf.d/default.conf
+
+COPY ./nginx.conf /etc/nginx/conf.d/
 
 EXPOSE 80
 
-CMD ["apachectl", "-D", "FOREGROUND"]
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl -f http://localhost/ || exit 1
+
+CMD ["nginx", "-g", "daemon off;"]

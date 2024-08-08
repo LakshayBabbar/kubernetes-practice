@@ -1,46 +1,46 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-app
+  name: express-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: web-app
+      app: express-app
   template:
     metadata:
       labels:
-        app: web-app
+        app: express-app
     spec:
       containers:
         - name: server
-          image: lakshaybabbar/server:04
+          image: lakshaybabbar/server:01
           ports:
-            - containerPort: 8000
+            - containerPort: 5000
           env:
             - name: PORT
-              value: "8000"
+              value: "5000"
             - name: MONGO_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: mongo-secret
+                  name: mongo-config
                   key: MONGO_HOST
             - name: MONGO_PORT
               valueFrom:
                 configMapKeyRef:
-                  name: mongo-secret
+                  name: mongo-config
                   key: MONGO_PORT
 
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: web-app-svc
+  name: express-app-svc
 spec:
-  ports:
-    - name: http
-      port: 8000
-      targetPort: 8000
-  selector:
-    app: web-app
   type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  selector:
+    app: express-app
