@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { apiUrl } from "../../utils/index.ts";
+import { AuthContext } from "../../context/AuthContext.tsx";
+import { useContext } from "react";
 
 const AuthPage = () => {
   const [searchParams] = useSearchParams();
@@ -11,8 +13,15 @@ const AuthPage = () => {
   const [errorMssg, setErrorMssg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useNavigate();
+  const { setIsAuth } = useContext(AuthContext);
   const inputStyle =
     "w-full rounded-md border border-neutral-800 p-2 bg-transparent";
+
+  useEffect(() => {
+    if (mode !== "login" && mode !== "signup") {
+      router("/auth?mode=signup");
+    }
+  }, [mode, router]);
 
   const valHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -36,7 +45,8 @@ const AuthPage = () => {
         throw new Error(res.error);
       }
       setLoading(false);
-      router("/user");
+      setIsAuth(true);
+      router("/profile");
     } catch (error) {
       setLoading(false);
       setErrorMssg((error as Error)?.message);
@@ -47,10 +57,10 @@ const AuthPage = () => {
     <main className="flex h-screen justify-center items-center">
       <form className="flex flex-col gap-4 w-80" onSubmit={submitHandler}>
         <div>
-          <h1 className="text-2xl text-blue-100 tracking-widest">
+          <h1 className="text-2xl text-blue-950 dark:text-blue-100 tracking-widest">
             {mode.toUpperCase()}
           </h1>
-          <h2 className="mt-1 text-blue-100">
+          <h2 className="mt-1 text-blue-950 dark:text-blue-100">
             {mode === "login" ? "Welcome back 👋" : "Create new account"}
           </h2>
         </div>
@@ -97,8 +107,8 @@ const AuthPage = () => {
             : "Already have an account? Login"}
         </Link>
       </form>
-      <div className="fixed w-[90%] md:w-[70%] h-[18%] bg-gradient-to-r from-blue-800 to-purple-800 blur-[150px] rounded-xl -top-10 -left-20 -rotate-12" />
-      <div className="fixed w-[90%] md:w-[70%] h-[18%] bg-gradient-to-r from-blue-800 to-purple-800 blur-[150px] rounded-xl -bottom-10 -right-20 -rotate-12" />
+      <div className="fixed w-[90%] md:w-[70%] h-[18%] bg-gradient-to-r from-blue-800 to-purple-800 blur-[150px] rounded-xl -top-10 -left-20 -rotate-12 -z-1" />
+      <div className="fixed w-[90%] md:w-[70%] h-[18%] bg-gradient-to-r from-blue-800 to-purple-800 blur-[150px] rounded-xl -bottom-10 -right-20 -rotate-12 -z-1" />
     </main>
   );
 };

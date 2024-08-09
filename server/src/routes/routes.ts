@@ -87,4 +87,14 @@ router.post("/api/logout", (req, res) => {
   }
 });
 
+router.get("/api/auth", auth, (req, res) => {
+  try {
+    return res.status(200).json({ isAuth: true });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "Internal Server Error", isAuth: false });
+  }
+});
+
 export default router;

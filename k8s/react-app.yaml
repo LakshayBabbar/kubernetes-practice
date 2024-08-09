@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: lakshaybabbar/client:latest
+          image: lakshaybabbar/client:02
           ports:
             - containerPort: 80
 ---

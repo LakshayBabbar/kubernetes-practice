@@ -6,7 +6,8 @@ import App from "./App.tsx";
 import "./index.css";
 import LoadingSpinner from "./components/ui/LoadingSpinner.tsx";
 import AuthPage from "./pages/auth/AuthPage.tsx";
-import User from "./pages/user/User.tsx";
+import Profile from "./pages/profile/Profile.tsx";
+import Protected from "./components/protected/Protected.tsx";
 
 const router = createBrowserRouter([
   {
@@ -14,12 +15,24 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
+        path: "/",
+        element: (
+          <Protected>
+            <h1 className="text-3xl font-semibold text-center mt-20">Home</h1>
+          </Protected>
+        ),
+      },
+      {
         path: "/auth",
         element: <AuthPage />,
       },
       {
-        path: "/user",
-        element: <User />,
+        path: "/profile",
+        element: (
+          <Protected>
+            <Profile />
+          </Protected>
+        ),
       },
     ],
   },
