@@ -22,7 +22,6 @@ spec:
               value: root
             - name: MONGO_INITDB_ROOT_PASSWORD
               value: abcd@1234
-
 ---
 kind: Service
 apiVersion: v1

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: lakshaybabbar/server:01
+          image: lakshaybabbar/server:02
           ports:
             - containerPort: 5000
           env:
@@ -30,6 +30,12 @@ spec:
                 configMapKeyRef:
                   name: mongo-config
                   key: MONGO_PORT
+            - name: JWT_SECRET
+              value: "practicek8sproject"
+            - name: JWT_SECRET
+              value: "practicek8sproject"
+            - name: ORIGIN
+              value: "http://react-app-svc:80"
 
 ---
 kind: Service
